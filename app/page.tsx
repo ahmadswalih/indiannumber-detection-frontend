@@ -1,113 +1,192 @@
+"use client";
+import axios from "axios";
 import Image from "next/image";
+import React, { useState } from "react";
+import { FiUploadCloud } from "react-icons/fi";
 
 export default function Home() {
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<any[]>([]);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setVideoFile(file);
+      setVideoUrl(URL.createObjectURL(file)); // Create a URL for the video file
+    }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+  const handleUpload = async () => {
+    if (!videoFile) return alert("Please select a video file to upload.");
+
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("video", videoFile);
+
+    try {
+      const response = await axios.post(
+        "https://numberplate-api.ahmadswalih.com/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response.data);
+
+      setResults(response.data);
+    } catch (error) {
+      console.error("Error uploading video:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
+    <div className="w-full items-center justify-center   ">
+      <div className="items-center justify-center flex flex-col mt-12  ">
+        <div className="flex flex-col p-3 items-center rounded-md bg-blue-  justify-evenly">
+          <Image
+            width={80}
+            height={80}
+            className=""
+            src="/assets/logo.svg"
+            alt="icon"
+          />
+        </div>
+        <p className="text-4xl items-center justify-center text-center font-arimo font-bold text-black  ">
+          Number Plate Detection From Video
         </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <p className="text-center  w-1/2 mt-4 font-normal  text-xl">
+          This demo serves as a proof of concept (POC). In this demonstration,
+          the number{" "}
+          <span className="text-red-600 underline"> "DL-3C-B J-1384" </span> has
+          been designated as a verified number from the backend system.
+          Therefore, in the uploaded video, any number plate corresponding to
+          this number will be recognized as verified or authenticated.
+        </p>
+        <div className="  items-center mt-4 flex justify-center">
+          <div className="border-2 mt-4 mr-4 border-dotted border-gray-400 p-4 rounded-md min-h-14  ">
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="video/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
+              <button
+                onClick={handleClick}
+                className="  flex text-xl text-gray-600 py-2 px-4 rounded"
+              >
+                <FiUploadCloud className="mr-3 " /> Select Your Video
+              </button>
+              {videoFile && (
+                <div className="mt-2 text-sm text-gray-500">
+                  Selected video: {videoFile.name}
+                </div>
+              )}
+            </div>
+          </div>
+          <button
+            onClick={handleUpload}
+            className=" btn-theame  hover:!bg-green-950 "
+            disabled={!videoFile || loading}
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            {loading ? (
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              "Upload Video"
+            )}
+          </button>
+        </div>
+        <div className=" ">
+          {results.length > 0 && (
+            <div className="table-auto bg-white rounded-2xl p-8 md:text-lg w-full md:w-[100%] shadow-xl text-sm mb-10 mt-16">
+              <thead className="  rounded-2xl text-left mt-10 text-gray-400">
+                <tr>
+                  {/* <th className="px-4 hidden md:flex py-2"></th> */}
+                  <th className="px-4 py-2">USER NAME</th>
+
+                  <th className="px-4 py-2">VEHICLE NUMBER</th>
+                  <th className="px-4 py-2">PASS TYPE</th>
+                  <th className="px-4 py-2">VEHICLE TYPE</th>
+                  <th className="px-4 py-2">STATUS</th>
+                </tr>
+              </thead>
+              <hr />
+              <tbody className="text-xl ">
+                {results.map((result, index) => (
+                  <>
+                    <tr className="font-poppins" key={index}>
+                      {/* <td className="border hidden md:flex px-4 py-2">
+                      {result.frame}
+                    </td> */}
+                      <td className=" px-4  border-b border-gray-300 py-2 p-10">
+                        {result.user ? result.user.name : "no user found"}
+                      </td>
+                      <td className=" border-b border-gray-300 px-4 py-2 p-10">
+                        {result.plate}
+                      </td>
+                      <td className=" border-b border-gray-300  px-4 py-2 p-10">
+                        {result.plate === "94ABCO" ? (
+                          <span className="bg-green-500 text-white p-2 text-sm rounded-3xl ">
+                            {" "}
+                            Military Annual Pass
+                          </span>
+                        ) : (
+                          <span className="text-gray-500">
+                            {" "}
+                            don't have a pass
+                          </span>
+                        )}
+                      </td>
+                      <td className=" border-b border-gray-300 px-4 py-2 p-10">
+                        {result.plate === "94ABCO" ? "Car" : "undefined"}
+                      </td>
+                      <td
+                        className={
+                          result.authentication === "Verified"
+                            ? " px-4 border-b border-gray-300  rounded-lg  font-bold py-2 text-green-500 p-10"
+                            : " px-4 border-b border-gray-300 py-2 text-red-500 p-10"
+                        }
+                      >
+                        {result.authentication}
+                      </td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </div>
+          )}
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }

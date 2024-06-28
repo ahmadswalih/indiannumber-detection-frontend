@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full items-center justify-center   ">
+    <div className="w-full text-black items-center justify-center   ">
       <div className="items-center justify-center flex flex-col mt-12  ">
         <div className="flex flex-col p-3 items-center rounded-md bg-blue-  justify-evenly">
           <Image
@@ -61,7 +61,7 @@ export default function Home() {
             alt="icon"
           />
         </div>
-        <p className=" text-2xl md:text-4xl items-center justify-center text-center font-arimo font-bold text-black  ">
+        <p className=" p-2 text-xl md:text-4xl items-center justify-center text-center font-arimo font-bold text-black  ">
           Number Plate Detection From Video
         </p>
         <p className="text-center w-full p-2  md:w-1/2 mt-4 font-normal   md:text-xl">

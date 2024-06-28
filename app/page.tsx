@@ -61,10 +61,10 @@ export default function Home() {
             alt="icon"
           />
         </div>
-        <p className="text-4xl items-center justify-center text-center font-arimo font-bold text-black  ">
+        <p className=" text-2xl md:text-4xl items-center justify-center text-center font-arimo font-bold text-black  ">
           Number Plate Detection From Video
         </p>
-        <p className="text-center  w-1/2 mt-4 font-normal  text-xl">
+        <p className="text-center w-full p-2  md:w-1/2 mt-4 font-normal   md:text-xl">
           This demo serves as a proof of concept (POC). In this demonstration,
           the number{" "}
           <span className="text-red-600 underline"> "DL7CD5017" </span> has been
@@ -72,7 +72,7 @@ export default function Home() {
           the uploaded video, any number plate corresponding to this number will
           be recognized as verified or authenticated.
         </p>
-        <div className="  items-center mt-4 flex justify-center">
+        <div className="  items-center mt-4 flex flex-col md:flex-row justify-center">
           <div className="border-2 mt-4 mr-4 border-dotted border-gray-400 p-4 rounded-md min-h-14  ">
             <div>
               <input

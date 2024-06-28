@@ -31,7 +31,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "https://numberplate-api.ahmadswalih.com/upload",
+        "https://indiannmberplate-api.ahmadswalih.com/upload",
         formData,
         {
           headers: {
@@ -67,10 +67,10 @@ export default function Home() {
         <p className="text-center  w-1/2 mt-4 font-normal  text-xl">
           This demo serves as a proof of concept (POC). In this demonstration,
           the number{" "}
-          <span className="text-red-600 underline"> "DL-3C-B J-1384" </span> has
-          been designated as a verified number from the backend system.
-          Therefore, in the uploaded video, any number plate corresponding to
-          this number will be recognized as verified or authenticated.
+          <span className="text-red-600 underline"> "DL7CD5017" </span> has been
+          designated as a verified number from the backend system. Therefore, in
+          the uploaded video, any number plate corresponding to this number will
+          be recognized as verified or authenticated.
         </p>
         <div className="  items-center mt-4 flex justify-center">
           <div className="border-2 mt-4 mr-4 border-dotted border-gray-400 p-4 rounded-md min-h-14  ">
@@ -155,10 +155,10 @@ export default function Home() {
                         {result.plate}
                       </td>
                       <td className=" border-b border-gray-300  px-4 py-2 p-10">
-                        {result.plate === "94ABCO" ? (
+                        {result.plate === "DL7CD5017" ? (
                           <span className="bg-green-500 text-white p-2 text-sm rounded-3xl ">
                             {" "}
-                            Military Annual Pass
+                            Resident Annual Pass
                           </span>
                         ) : (
                           <span className="text-gray-500">
@@ -168,7 +168,7 @@ export default function Home() {
                         )}
                       </td>
                       <td className=" border-b border-gray-300 px-4 py-2 p-10">
-                        {result.plate === "94ABCO" ? "Car" : "undefined"}
+                        {result.plate === "DL7CD5017" ? "Car" : "Car"}
                       </td>
                       <td
                         className={

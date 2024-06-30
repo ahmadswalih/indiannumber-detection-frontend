@@ -155,7 +155,7 @@ export default function Home() {
                         {result.plate}
                       </td>
                       <td className=" border-b border-gray-300  px-4 py-2 p-10">
-                        {result.plate === "DL7CD5017" ? (
+                        {result.plate === "DL3CBJ1384" ? (
                           <span className="bg-green-500 text-white p-2 text-sm rounded-3xl ">
                             {" "}
                             Resident Annual Pass

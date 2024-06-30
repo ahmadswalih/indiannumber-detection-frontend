@@ -168,7 +168,7 @@ export default function Home() {
                         )}
                       </td>
                       <td className=" border-b border-gray-300 px-4 py-2 p-10">
-                        {result.plate === "DL7CD5017" ? "Car" : "Car"}
+                        {result.vehicleType}
                       </td>
                       <td
                         className={

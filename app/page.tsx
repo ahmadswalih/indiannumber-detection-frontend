@@ -31,7 +31,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "https://indiannmberplate-api.ahmadswalih.com/upload",
+        process.env.NEXT_PUBLIC_API_URL!,
         formData,
         {
           headers: {
@@ -67,10 +67,10 @@ export default function Home() {
         <p className="text-center w-full p-2  md:w-1/2 mt-4 font-normal   md:text-xl">
           This demo serves as a proof of concept (POC). In this demonstration,
           the number{" "}
-          <span className="text-red-600 underline"> "DL7CD5017" </span> has been
-          designated as a verified number from the backend system. Therefore, in
-          the uploaded video, any number plate corresponding to this number will
-          be recognized as verified or authenticated.
+          <span className="text-red-600 underline"> "DL3CBJ1384" </span> has
+          been designated as a verified number from the backend system.
+          Therefore, in the uploaded video, any number plate corresponding to
+          this number will be recognized as verified or authenticated.
         </p>
         <div className="  items-center mt-4 flex flex-col md:flex-row justify-center">
           <div className="border-2 mt-4 mr-4 border-dotted border-gray-400 p-4 rounded-md min-h-14  ">
@@ -136,12 +136,12 @@ export default function Home() {
 
                   <th className="px-4 py-2">VEHICLE NUMBER</th>
                   <th className="px-4 py-2">PASS TYPE</th>
-                  <th className="px-4 py-2">VEHICLE TYPE</th>
+                  <th className="px-4 py-2 hidden md:flex">VEHICLE TYPE</th>
                   <th className="px-4 py-2">STATUS</th>
                 </tr>
               </thead>
               <hr />
-              <tbody className="text-xl ">
+              <tbody className=" text-sm md:text-xl ">
                 {results.map((result, index) => (
                   <>
                     <tr className="font-poppins" key={index}>
@@ -156,7 +156,7 @@ export default function Home() {
                       </td>
                       <td className=" border-b border-gray-300  px-4 py-2 p-10">
                         {result.plate === "DL3CBJ1384" ? (
-                          <span className="bg-green-500 text-white p-2 text-sm rounded-3xl ">
+                          <span className="bg-none md:bg-green-500 text-green-600 md:text-white p-2 text-sm rounded-3xl ">
                             {" "}
                             Resident Annual Pass
                           </span>
@@ -167,7 +167,7 @@ export default function Home() {
                           </span>
                         )}
                       </td>
-                      <td className=" border-b border-gray-300 px-4 py-2 p-10">
+                      <td className=" border-b hidden md:flex border-gray-300 px-4 py-2 p-10">
                         {result.vehicleType}
                       </td>
                       <td

@@ -16,6 +16,8 @@ const config: Config = {
       fontFamily: {
         'arimo': ['Arimo', 'sans-serif'],
         'comfortaa': ['Comfortaa', 'cursive'],
+        'outfit': ['Outfit', 'sans-serif'], 
+        'plus-jakarta-sans': ['Plus Jakarta Sans', 'sans-serif'],
       }
     },
   },

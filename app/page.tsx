@@ -1,6 +1,7 @@
 "use client";
 import axios from "axios";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { FiUploadCloud } from "react-icons/fi";
 
@@ -72,6 +73,12 @@ export default function Home() {
           Therefore, in the uploaded video, any number plate corresponding to
           this number will be recognized as verified or authenticated.
         </p>
+        <Link href="/image-processing">
+          {" "}
+          <p className="bg-green-900 btn-theame p-3 text-white rounded-2xl border ">
+            Process Image{" "}
+          </p>
+        </Link>
         <div className="  items-center mt-4 flex flex-col md:flex-row justify-center">
           <div className="border-2 mt-4 mr-4 border-dotted border-gray-400 p-4 rounded-md min-h-14  ">
             <div>
